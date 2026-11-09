@@ -18,7 +18,6 @@ PERMS='
     <uses-feature android:name="android.hardware.microphone" android:required="false" />'
 
 if ! grep -q "android.permission.CAMERA" "$MANIFEST"; then
-  # insere logo antes de </manifest>
   python3 - "$MANIFEST" "$PERMS" <<'PY'
 import sys
 path, perms = sys.argv[1], sys.argv[2]
@@ -28,15 +27,14 @@ open(path, "w", encoding="utf-8").write(s)
 PY
 fi
 
-# --- Ícone do app (usa assets/icon-512.png) ---
+# --- Ícone do app (usa icon-512.png sem redimensionar) ---
 ICON="www/assets/icon-512.png"
 rm -rf "$RES"/mipmap-anydpi-v26
-for pair in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
-  d="${pair%%:*}"; px="${pair##*:}"
+for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
   mkdir -p "$RES/mipmap-$d"
-  convert "$ICON" -resize "${px}x${px}" "$RES/mipmap-$d/ic_launcher.png"
-  cp "$RES/mipmap-$d/ic_launcher.png" "$RES/mipmap-$d/ic_launcher_round.png"
-  cp "$RES/mipmap-$d/ic_launcher.png" "$RES/mipmap-$d/ic_launcher_foreground.png"
+  cp "$ICON" "$RES/mipmap-$d/ic_launcher.png"
+  cp "$ICON" "$RES/mipmap-$d/ic_launcher_round.png"
+  cp "$ICON" "$RES/mipmap-$d/ic_launcher_foreground.png"
 done
 
 echo "Projeto Android ajustado."
