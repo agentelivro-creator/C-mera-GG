@@ -1,0 +1,7 @@
+{
+  "appId": "com.cameracine.app",
+  "appName": "Câmera Cine",
+  "webDir": "www",
+  "backgroundColor": "#000000",
+  "ios": { "contentInset": "never" }
+}
